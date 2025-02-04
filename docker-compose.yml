@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mariadb:11.5
+    container_name: kinoprojekt-database
+    restart: always
+    env_file:
+      - ./backend/.env
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - '3306:3306' # {local_port}:{container_port}
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: springboot-app
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+
+volumes:
+  db-data:
