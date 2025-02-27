@@ -4,6 +4,7 @@ user:
   userName: string
   email: string
   password: string
+  profilePic: int -> media(id)
 
 media:
   id: int
@@ -31,3 +32,15 @@ rating:
   userId: int -> user(id)
   videoId: int -> video(id)
   rating: bool
+
+subscription:
+  id: int
+  channelId: int -> user(id)
+  userId: int -> user(id)
+  notifications: bool
+
+history:
+  id: int
+  userId: int -> user(id)
+  videoId: int -> video(id)
+  watchTime: int (in seconds)

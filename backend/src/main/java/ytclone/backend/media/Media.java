@@ -21,6 +21,8 @@ public class Media {
     private Media media;
     @OneToOne(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
     private Video video;
+    @OneToOne(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
+    private User userPic;
 
     protected Media() {}
 

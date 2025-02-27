@@ -17,6 +17,9 @@ public class User {
     private String userName;
     private String email;
     private String password;
+    @OneToOne
+    @JoinColumn(name = "media_id", nullable = false)
+    private Media profilePic;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Media> mediaList;
