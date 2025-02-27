@@ -1,19 +1,25 @@
 package ytclone.backend.rating;
 
 import jakarta.persistence.*;
+import ytclone.backend.user.User;
+import ytclone.backend.video.Video;
 
 @Entity
-public class rating {
+public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long videoId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+    @ManyToOne
+    @JoinColumn(name = "video_id", nullable = false)
+    private Video videoId;
     private Boolean rating;
 
-    protected rating() {}
+    protected Rating() {}
 
-    public rating(Long userId, Long videoId, Boolean rating) {
+    public Rating(User userId, Video videoId, Boolean rating) {
         this.userId = userId;
         this.videoId = videoId;
         this.rating = rating;
@@ -22,10 +28,10 @@ public class rating {
     public Long getId() {
         return id;
     }
-    public Long getUserId() {
+    public User getUserId() {
         return userId;
     }
-    public Long getVideoId() {
+    public Video getVideoId() {
         return videoId;
     }
     public Boolean getRating() {

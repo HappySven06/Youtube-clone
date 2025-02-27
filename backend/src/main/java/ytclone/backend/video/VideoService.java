@@ -1,4 +1,4 @@
 package ytclone.backend.video;
 
-public class videoService {
+public class VideoService {
 }

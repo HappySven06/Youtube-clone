@@ -1,19 +1,25 @@
 package ytclone.backend.comment;
 
 import jakarta.persistence.*;
+import ytclone.backend.user.User;
+import ytclone.backend.video.Video;
 
 @Entity
-public class comment {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long userId;
-    private long videoId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+    @ManyToOne
+    @JoinColumn(name = "video_id", nullable = false)
+    private Video videoId;
     private String body;
 
-    protected comment() {}
+    protected Comment() {}
 
-    public comment(long userId, long videoId, String body) {
+    public Comment(User userId, Video videoId, String body) {
         this.userId = userId;
         this.videoId = videoId;
         this.body = body;
@@ -22,10 +28,10 @@ public class comment {
     public long getId() {
         return id;
     }
-    public long getUserId() {
+    public User getUserId() {
         return userId;
     }
-    public long getVideoId() {
+    public Video getVideoId() {
         return videoId;
     }
     public String getBody() {

@@ -1,4 +1,4 @@
 package ytclone.backend.comment;
 
-public class commentRepository {
+public class CommentService {
 }

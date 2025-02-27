@@ -1,4 +1,4 @@
 package ytclone.backend.rating;
 
-public class ratingRepository {
+public class RatingService {
 }
