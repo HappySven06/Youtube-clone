@@ -16,6 +16,7 @@ services:
       - "3306:3306"
     profiles:
       - database
+      - app
 
   minio:
     image: docker.io/bitnami/minio:2022
@@ -33,6 +34,7 @@ services:
       - '9001:9001'
     profiles:
       - database
+      - app
 
   backend:
     build:
@@ -48,6 +50,8 @@ services:
       - SPRING_DEVTOOLS_REMOTE_ENABLED=true
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
     command: [ "sh", "-c", "./gradlew bootRun --no-daemon" ]
+    profiles:
+      - app
   
   frontend:
     build:
@@ -65,6 +69,8 @@ services:
           target: /frontend
           ignore:
             - node_modules/
+    profiles:
+      - app
 
 volumes:
   db-data:
