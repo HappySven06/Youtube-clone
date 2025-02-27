@@ -1,28 +1,71 @@
 services:
   db:
     image: mariadb:11.5
-    container_name: kinoprojekt-database
+    container_name: ytclone-database
     restart: always
     env_file:
-      - ./backend/.env
+      - ./.env
+    environment:
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
     ports:
-      - '3306:3306' # {local_port}:{container_port}
+      - "3306:3306"
+    profiles:
+      - database
+
+  minio:
+    image: docker.io/bitnami/minio:2022
+    container_name: ytclone-minio
+    env_file:
+      - ./.env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_DEFAULT_BUCKETS: ${MINIO_DEFAULT_BUCKETS}
+    volumes:
+      - 'minio_data:/data'
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    profiles:
+      - database
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: springboot-app
-    depends_on:
-      - mariadb
+      context: ./backend/
+      dockerfile: backend.Dockerfile
+    container_name: ytclone-backend
     ports:
       - "8080:8080"
+    volumes:
+      - ./backend/src/main/java:/backend/src/main/java  # Ensures code changes are detected
+      - ~/.m2:/root/.m2  # Caches dependencies
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/mydb
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
+      - SPRING_DEVTOOLS_REMOTE_ENABLED=true
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+    command: [ "sh", "-c", "./gradlew bootRun --no-daemon" ]
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+    container_name: ytclone-frontend
+    restart: always
+    ports:
+      - "8081:8081"
+    command: npx expo start
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /frontend
+          ignore:
+            - node_modules/
 
 volumes:
   db-data:
+  minio_data:

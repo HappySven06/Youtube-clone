@@ -1,0 +1,33 @@
+user:
+  id: int
+  channelName: string
+  userName: string
+  email: string
+  password: string
+
+media:
+  id: int
+  userId: int -> user(id)
+  type: string
+  link: string
+  access: bool
+
+video:
+  id: int
+  userId: int -> user(id)
+  title: string
+  description: text
+  thumbnail: int -> media(id)
+  video: int -> media(id)
+
+comment:
+  id: int
+  userId: int -> user(id)
+  videoId: int -> video(id)
+  body: text
+
+rating:
+  id: int
+  userId: int -> user(id)
+  videoId: int -> video(id)
+  rating: bool

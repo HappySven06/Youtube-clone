@@ -1,4 +1,4 @@
-package dev.ytclone.backend;
+package ytclone.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
