@@ -1,6 +1,7 @@
 package ytclone.backend.video;
 
 import jakarta.persistence.*;
+import ytclone.backend.history.History;
 import ytclone.backend.media.Media;
 import ytclone.backend.rating.Rating;
 import ytclone.backend.user.User;
@@ -15,25 +16,27 @@ public class Video {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
     private String title;
     private String description;
     @OneToOne
-    @JoinColumn(name = "media_id", nullable = false)
+    @JoinColumn(name = "thumbnail_media_id", nullable = false)
     private Media thumbnail;
     @OneToOne
-    @JoinColumn(name = "media_id", nullable = false)
+    @JoinColumn(name = "video_media_id", nullable = false)
     private Media video;
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> commentList;
+    private List<Comment> comments;
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> ratingList;
+    private List<History> history;
+    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
 
     protected Video() {}
 
-    public Video(Long id, User userId, String title, String description, Media thumbnail, Media video) {
-        this.userId = userId;
+    public Video(Long id, User user, String title, String description, Media thumbnail, Media video) {
+        this.user = user;
         this.title = title;
         this.description = description;
         this.thumbnail = thumbnail;
@@ -44,7 +47,7 @@ public class Video {
         return id;
     }
     public User getUserId() {
-        return userId;
+        return user;
     }
     public String getTitle() {
         return title;
@@ -60,9 +63,12 @@ public class Video {
     }
 
     public List<Comment> getCommentList() {
-        return commentList;
+        return comments;
     }
     public List<Rating> getRatingList() {
-        return ratingList;
+        return ratings;
+    }
+    public List<History> getHistoryList() {
+        return history;
     }
 }

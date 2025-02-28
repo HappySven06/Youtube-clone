@@ -11,17 +11,17 @@ public class Rating {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "video_id", nullable = false)
-    private Video videoId;
+    private Video video;
     private Boolean rating;
 
     protected Rating() {}
 
-    public Rating(User userId, Video videoId, Boolean rating) {
-        this.userId = userId;
-        this.videoId = videoId;
+    public Rating(User user, Video video, Boolean rating) {
+        this.user = user;
+        this.video = video;
         this.rating = rating;
     }
 
@@ -29,10 +29,10 @@ public class Rating {
         return id;
     }
     public User getUserId() {
-        return userId;
+        return user;
     }
     public Video getVideoId() {
-        return videoId;
+        return video;
     }
     public Boolean getRating() {
         return rating;

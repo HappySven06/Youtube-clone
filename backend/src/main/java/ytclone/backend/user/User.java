@@ -1,7 +1,9 @@
 package ytclone.backend.user;
 
 import jakarta.persistence.*;
+import ytclone.backend.history.History;
 import ytclone.backend.media.Media;
+import ytclone.backend.subscription.Subscription;
 import ytclone.backend.video.Video;
 import ytclone.backend.comment.Comment;
 import ytclone.backend.rating.Rating;
@@ -18,17 +20,24 @@ public class User {
     private String email;
     private String password;
     @OneToOne
-    @JoinColumn(name = "media_id", nullable = false)
+    @JoinColumn(name = "profilePic_media_id", nullable = false)
     private Media profilePic;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Media> mediaList;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Video> videoList;
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription>  channelIdList;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> commentList;
+    private List<Subscription>  userIdList;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> ratingList;
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<History> history;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
+
 
     protected User() {}
 
@@ -62,9 +71,18 @@ public class User {
         return videoList;
     }
     public List<Comment> getCommentList() {
-        return commentList;
+        return comments;
     }
     public List<Rating> getRatingList() {
-        return ratingList;
+        return ratings;
+    }
+    public List<Subscription> getChannelIdList() {
+        return channelIdList;
+    }
+    public List<Subscription> getUserIdList() {
+        return userIdList;
+    }
+    public List<History> getHistoryList() {
+        return history;
     }
 }

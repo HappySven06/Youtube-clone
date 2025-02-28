@@ -11,17 +11,17 @@ public class Comment {
     private long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "video_id", nullable = false)
-    private Video videoId;
+    private Video video;
     private String body;
 
     protected Comment() {}
 
-    public Comment(User userId, Video videoId, String body) {
-        this.userId = userId;
-        this.videoId = videoId;
+    public Comment(User user, Video video, String body) {
+        this.user = user;
+        this.video = video;
         this.body = body;
     }
 
@@ -29,10 +29,10 @@ public class Comment {
         return id;
     }
     public User getUserId() {
-        return userId;
+        return user;
     }
     public Video getVideoId() {
-        return videoId;
+        return video;
     }
     public String getBody() {
         return body;

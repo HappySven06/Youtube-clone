@@ -17,11 +17,11 @@ public class Media {
     private String link;
     private boolean access;
 
-    @OneToOne(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Media media;
-    @OneToOne(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Video video;
-    @OneToOne(mappedBy = "media", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Video videoMedia;
+    @OneToOne(mappedBy = "thumbnail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Video thumbnailMedia;
+    @OneToOne(mappedBy = "profilePic", cascade = CascadeType.ALL, orphanRemoval = true)
     private User userPic;
 
     protected Media() {}
@@ -50,10 +50,10 @@ public class Media {
         return access;
     }
 
-    public Media getMedia() {
-        return media;
+    public Video getMedia() {
+        return thumbnailMedia;
     }
     public Video getVideo() {
-        return video;
+        return videoMedia;
     }
 }
