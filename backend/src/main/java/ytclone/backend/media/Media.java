@@ -26,8 +26,7 @@ public class Media {
 
     protected Media() {}
 
-    public Media(Long id, User userId, String type, String link, boolean access) {
-        this.id = id;
+    public Media(User userId, String type, String link, boolean access) {
         this.userId = userId;
         this.type = type; 
         this.link = link;

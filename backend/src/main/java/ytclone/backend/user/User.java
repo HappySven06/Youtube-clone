@@ -20,7 +20,7 @@ public class User {
     private String email;
     private String password;
     @OneToOne
-    @JoinColumn(name = "profilePic_media_id", nullable = false)
+    @JoinColumn(name = "profilePic_media_id", nullable = true)
     private Media profilePic;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,6 +62,22 @@ public class User {
     }
     public String getPassword() {
         return password;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public void setProfilePic(Media profilePic) {
+        this.profilePic = profilePic;
     }
 
     public List<Media> getMediaList() {

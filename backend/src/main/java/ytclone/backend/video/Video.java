@@ -1,6 +1,7 @@
 package ytclone.backend.video;
 
 import jakarta.persistence.*;
+import org.w3c.dom.Text;
 import ytclone.backend.history.History;
 import ytclone.backend.media.Media;
 import ytclone.backend.rating.Rating;
@@ -35,7 +36,7 @@ public class Video {
 
     protected Video() {}
 
-    public Video(Long id, User user, String title, String description, Media thumbnail, Media video) {
+    public Video(User user, String title, String description, Media thumbnail, Media video) {
         this.user = user;
         this.title = title;
         this.description = description;
