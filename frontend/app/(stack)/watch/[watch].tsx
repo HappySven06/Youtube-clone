@@ -1,7 +1,7 @@
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 
 interface videoObject {
   access: boolean,
@@ -52,15 +52,18 @@ export default function Watch() {
     }
   }, [video]);
 
+  const videoUrl = video ? `${mediaUrl}${video.video.link}` : null;
+
+  const player = useVideoPlayer(videoUrl, (player) => player.play());
+
   return (
-    <View>
+    <View className='flex'>
       {video ? (
-        <Video
-          source={{ uri: `${mediaUrl}${video.video.link}` }}
-          shouldPlay
-          useNativeControls
-          style={{ width: '100%', height: 300 }}
-        />
+        videoUrl ? (
+          <VideoView style={{ width: '100%', height: '55%' }} player={player} allowsFullscreen nativeControls />
+        ) : (
+          <Text>Video URL not available</Text>
+        )
       ) : (
         <Text>Loading video...</Text>
       )}

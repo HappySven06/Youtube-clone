@@ -1,4 +1,4 @@
-import { Text, View, Platform } from 'react-native';
+import { Text, View, Platform, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import React from 'react';
 
@@ -11,7 +11,11 @@ export default function HeaderLabel (){
         {Platform.OS === 'web' && 
           <Ionicons name="menu" size={24} color="white" />
         }
-        <Text className='text-xl text-white font-semibold'>Youtube</Text>
+        <Link href='/(tabs)' asChild>
+          <Pressable>
+            <Text className='text-xl text-white font-semibold'>Youtube</Text>
+          </Pressable>
+        </Link>
       </View>
 
       <View className='flex flex-row space-x-2 self-end'>

@@ -32,7 +32,7 @@ export default function Index() {
           <Text>Menue</Text>
         </View>
       }
-      <ScrollView className={`flex ${Platform.OS === 'web' ? 'flex-row' : 'flex-col'} justify-items-center`} style={{ width: '100%' }}>
+      <ScrollView className={`flex ${Platform.OS === 'web' ? 'flex-row' : 'flex-col'} justify-items-center w-full h-screen`}>
         {videoData.map((video, index) => (
           <VideoCard
             key={video.id}

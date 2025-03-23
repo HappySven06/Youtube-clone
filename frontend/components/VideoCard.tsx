@@ -15,7 +15,7 @@ interface props {
 
 export default function VideoCard ({id, name, thumbnail, channel, views, color} : props){
   return(
-    <Link href={{ pathname: '/(tabs)/watch/[watch]', params: { watch: id }}} className='flex flex-col justify-between rounded-md shadow-md' style={{ width: '100%' }} asChild>
+    <Link href={{ pathname: '/(stack)/watch/[watch]', params: { watch: id }}} className='flex flex-col justify-between rounded-md shadow-md' style={{ width: '100%' }} asChild>
       <Pressable>
         <Image source={{ uri: thumbnail }} style={{width: '100%', height: 200}} />
         <View className='m-5'>
