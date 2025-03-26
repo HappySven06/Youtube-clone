@@ -22,7 +22,7 @@ public class ImageGenerator {
 
     // Save the file
     String filename = "image-" + UUID.randomUUID() + ".jpg";
-    File outputFile = new File("./src/main/java/ytclone/backend/database/ImageFile/" + filename);
+    File outputFile = new File("../db/ImageFile/" + filename);
     ImageIO.write(image, "jpg", outputFile);
 
     return outputFile;

@@ -1,5 +1,6 @@
 package ytclone.backend.video;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import org.w3c.dom.Text;
 import ytclone.backend.history.History;
@@ -11,14 +12,18 @@ import ytclone.backend.comment.Comment;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
     private String title;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
     @OneToOne
     @JoinColumn(name = "thumbnail_media_id", nullable = false)
@@ -47,8 +52,8 @@ public class Video {
     public Long getId() {
         return id;
     }
-    public User getUserId() {
-        return user;
+    public Long getUserId() {
+        return user.getId();
     }
     public String getTitle() {
         return title;

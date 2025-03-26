@@ -30,7 +30,16 @@ public class MinioService {
   // 🏆 Overloaded method to upload a File
   public String uploadFile(File file, String contentType) {
     try (InputStream inputStream = new FileInputStream(file)) {
-      return uploadFileStream(inputStream, contentType, file.length(), getFileExtension(file));
+      String uploadedFilePath = uploadFileStream(inputStream, contentType, file.length(), getFileExtension(file));
+
+      // Delete the file from the local machine
+      if (file.delete()) {
+        System.out.println("File deleted successfully: " + file.getAbsolutePath());
+      } else {
+        System.err.println("Failed to delete the file: " + file.getAbsolutePath());
+      }
+
+      return uploadedFilePath;
     } catch (Exception e) {
       throw new RuntimeException("Error uploading file to MinIO", e);
     }

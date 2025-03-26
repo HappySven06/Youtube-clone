@@ -9,7 +9,7 @@ import java.util.UUID;
 @Service
 public class VideoGenerator {
   public static File generateVideo() {
-    File videoFile = new File("./src/main/java/ytclone/backend/database/VideoFile/" + UUID.randomUUID() + ".mp4");
+    File videoFile = new File("../db/VideoFile/" + UUID.randomUUID() + ".mp4");
     try {
       // FFmpeg command to generate a 5-second silent video
       ProcessBuilder processBuilder = new ProcessBuilder(

@@ -67,48 +67,53 @@ public class DatabaseSeeder implements CommandLineRunner {
   @Override
   @Transactional
   public void run(String... args) {
-    seedUsers(5);
+    seedUsers(100);
   }
 
   private void seedUsers(int count) {
-    List<User> users = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
-      User user = new User(faker.funnyName().name(), faker.name().username(), faker.internet().emailAddress(), faker.internet().password());
-      users.add(user);
-    }
-    userRepository.saveAll(users);
-
-    List<Media> profilePics = new ArrayList<>();
-    for (User user : users) {
-      String imageUrl = uploadFakeFile("image/png", ".png"); // Upload fake image
-
-      Media media = new Media(user, "image", imageUrl, true);
-      profilePics.add(media);
-
-      user.setProfilePic(media);
-    }
-    mediaRepository.saveAll(profilePics);
-    userRepository.saveAll(users);
-
-    List<Video> videos = new ArrayList<>();
-    for (User user : users) {
-      for (int j = 0; j < 3; j++) { // Each user uploads 3 videos
-        String thumbnailUrl = uploadFakeFile("image/png", ".png"); // Fake thumbnail
-        String videoUrl = uploadFakeFile("video/mp4", ".mp4"); // Fake video file
-
-        Media thumbnail = new Media(user, "image", thumbnailUrl, true);
-        mediaRepository.save(thumbnail);
-
-        Media videoFile = new Media(user, "video", videoUrl, true);
-        mediaRepository.save(videoFile);
-
-        Video video = new Video(user, faker.book().title(), faker.lorem().paragraph(), thumbnail, videoFile);
-        videos.add(video);
+    if(userRepository.count() < count) {
+      List<User> users = new ArrayList<>();
+      for (int i = 0; i < count; i++) {
+        User user = new User(faker.funnyName().name(), faker.name().username(), faker.internet().emailAddress(), faker.internet().password());
+        users.add(user);
       }
-    }
-    videoRepository.saveAll(videos);
+      userRepository.saveAll(users);
 
-    System.out.println("Database seeding completed!");
+      List<Media> profilePics = new ArrayList<>();
+      for (User user : users) {
+        String imageUrl = uploadFakeFile("image/png", ".png"); // Upload fake image
+
+        Media media = new Media(user, "image", imageUrl, true);
+        profilePics.add(media);
+
+        user.setProfilePic(media);
+      }
+      mediaRepository.saveAll(profilePics);
+      userRepository.saveAll(users);
+
+      List<Video> videos = new ArrayList<>();
+      for (User user : users) {
+        for (int j = 0; j < 3; j++) { // Each user uploads 3 videos
+          String thumbnailUrl = uploadFakeFile("image/png", ".png"); // Fake thumbnail
+          String videoUrl = uploadFakeFile("video/mp4", ".mp4"); // Fake video file
+
+          Media thumbnail = new Media(user, "image", thumbnailUrl, true);
+          mediaRepository.save(thumbnail);
+
+          Media videoFile = new Media(user, "video", videoUrl, true);
+          mediaRepository.save(videoFile);
+
+          Video video = new Video(user, faker.book().title(), faker.lorem().paragraph(), thumbnail, videoFile);
+          videos.add(video);
+        }
+      }
+      videoRepository.saveAll(videos);
+
+      System.out.println("Database seeding completed!");
+    }
+    else {
+      System.out.println("Database seeding completed before!");
+    }
   }
 
   private String uploadFakeFile(String contentType, String extension) {

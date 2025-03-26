@@ -1,17 +1,19 @@
 package ytclone.backend.media;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.*;
 import ytclone.backend.user.User;
 import ytclone.backend.video.Video;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIdentityReference(alwaysAsId = true)
     private User userId;
     private String type;
     private String link;
@@ -36,8 +38,8 @@ public class Media {
     public Long getId() {
         return id;
     }
-    public User getUserId() {
-        return userId;
+    public Long getUserId() {
+        return userId.getId();
     }
     public String getType() {
         return type;

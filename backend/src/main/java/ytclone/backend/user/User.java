@@ -1,5 +1,6 @@
 package ytclone.backend.user;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import ytclone.backend.history.History;
 import ytclone.backend.media.Media;
@@ -11,6 +12,7 @@ import ytclone.backend.rating.Rating;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,6 @@ public class User {
     private List<History> history;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
-
 
     protected User() {}
 

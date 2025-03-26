@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/video")
 public class VideoController {
@@ -20,5 +22,15 @@ public class VideoController {
     @GetMapping
     public String getVideo() {
         return "This is the video controller";
+    }
+
+    @GetMapping("/{id}")
+    public Video getVideoById(@PathVariable long id) {
+        return videoService.getById(id);
+    }
+
+    @GetMapping("/videos")
+    public List<Video> getVideos() {
+        return videoService.getAll();
     }
 }
