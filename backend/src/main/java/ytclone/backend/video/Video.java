@@ -14,28 +14,35 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Video {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private User user;
+
     private String title;
+
     @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
+
     @OneToOne
     @JoinColumn(name = "thumbnail_media_id", nullable = false)
     private Media thumbnail;
+
     @OneToOne
     @JoinColumn(name = "video_media_id", nullable = false)
     private Media video;
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<History> history;
+
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
 
@@ -52,8 +59,8 @@ public class Video {
     public Long getId() {
         return id;
     }
-    public Long getUserId() {
-        return user.getId();
+    public User getUser() {
+        return user;
     }
     public String getTitle() {
         return title;

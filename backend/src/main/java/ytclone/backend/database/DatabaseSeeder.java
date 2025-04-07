@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.w3c.dom.Text;
 import ytclone.backend.user.UserRepository;
 import ytclone.backend.media.MediaRepository;
 import ytclone.backend.video.VideoRepository;
@@ -22,17 +21,10 @@ import ytclone.backend.rating.Rating;
 import ytclone.backend.subscription.Subscription;
 import ytclone.backend.history.History;
 
-import ytclone.backend.database.MinioService;
-import ytclone.backend.database.VideoGenerator;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.io.File;
-import java.io.IOException;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -74,10 +66,12 @@ public class DatabaseSeeder implements CommandLineRunner {
     if(userRepository.count() < count) {
       List<User> users = new ArrayList<>();
       for (int i = 0; i < count; i++) {
-        User user = new User(faker.funnyName().name(), faker.name().username(), faker.internet().emailAddress(), faker.internet().password());
+        User user = new User(faker.funnyName().name(), faker.name().fullName(), faker.internet().emailAddress(), faker.internet().password());
         users.add(user);
       }
       userRepository.saveAll(users);
+
+      System.out.println("User seeding completed!");
 
       List<Media> profilePics = new ArrayList<>();
       for (User user : users) {
@@ -108,6 +102,75 @@ public class DatabaseSeeder implements CommandLineRunner {
         }
       }
       videoRepository.saveAll(videos);
+
+      System.out.println("Video seeding completed!");
+
+      List<Comment> comments = new ArrayList<>();
+      List<History> historys = new ArrayList<>();
+      List<Rating> ratings = new ArrayList<>();
+      for (Video video : videos) {
+        for (User user : users) {
+          int diceRoll;
+
+          diceRoll = getRandom(2, 2);
+          if(diceRoll == 1) {
+            History history = new History(user, video, (long) getRandom(1, 5));
+            historys.add(history);
+
+            diceRoll = getRandom(2, 2);
+            Comment comment = null;
+            if (diceRoll == 1) {
+              comment = new Comment(user, video, faker.lorem().paragraph());
+            }
+            if (comment != null) {
+              comments.add(comment);
+            }
+
+            diceRoll = getRandom(1, 3);
+            Rating rating = null;
+            if (diceRoll == 1) {
+              rating = new Rating(user, video, true);
+            } else if (diceRoll == 3) {
+              rating = new Rating(user, video, false);
+            }
+            if (rating != null) {
+              ratings.add(rating);
+            }
+          }
+        }
+      }
+      commentRepository.saveAll(comments);
+      historyRepository.saveAll(historys);
+      ratingRepository.saveAll(ratings);
+
+      System.out.println("Comments seeding completed!");
+      System.out.println("History seeding completed!");
+      System.out.println("Ratings seeding completed!");
+
+      List<Subscription> subscriptions = new ArrayList<>();
+      for (User channel : users) {
+        for (User user : users) {
+          int diceRoll = getRandom(2, 2);
+          Subscription subscription = null;
+
+          if (diceRoll == 1) {
+            boolean notifications = false;
+            diceRoll = getRandom(2, 2);
+
+            if(diceRoll == 1) {
+              notifications = true;
+            }
+
+            subscription = new Subscription(channel, user, notifications);
+          }
+          if (subscription != null) {
+            subscriptions.add(subscription);
+          }
+        }
+      }
+      subscriptionRepository.saveAll(subscriptions);
+
+      System.out.println("Subscriptions seeding completed!");
 
       System.out.println("Database seeding completed!");
     }
@@ -141,5 +204,18 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     return null;
+  }
+
+  private int getRandom(int type, int max) {
+    Random random = new Random();
+
+    if(type == 1) {
+      return random.nextInt(max) + 1;
+    }
+    if(type == 2) {
+      return random.nextBoolean() ? 1 : 0;
+    }
+
+    return 0;
   }
 }

@@ -38,9 +38,9 @@ export default function Index() {
             key={video.id}
             id={video.id}
             name={video.title}
-            thumbnail={mediaUrl + video.thumbnail.link}
-            channel='Something'
-            views='1'
+            thumbnail={mediaUrl + video.thumbnailLink}
+            channel={video.channelname}
+            views={video.views}
             color='dark'
           />
         ))}

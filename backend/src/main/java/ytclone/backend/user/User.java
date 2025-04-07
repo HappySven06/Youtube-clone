@@ -14,29 +14,42 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String channelName;
+
     private String userName;
+
     private String email;
+
+    @JsonIgnore
     private String password;
+
     @OneToOne
     @JoinColumn(name = "profilePic_media_id", nullable = true)
     private Media profilePic;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Media> mediaList;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Video> videoList;
+
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription>  channelIdList;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription>  userIdList;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<History> history;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
 
@@ -63,6 +76,9 @@ public class User {
     }
     public String getPassword() {
         return password;
+    }
+    public Media getProfilePic() {
+        return profilePic;
     }
 
     public void setChannelName(String channelName) {

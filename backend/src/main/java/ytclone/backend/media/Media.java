@@ -11,18 +11,23 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIdentityReference(alwaysAsId = true)
     private User userId;
+
     private String type;
+
     private String link;
+
     private boolean access;
 
     @OneToOne(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
     private Video videoMedia;
+
     @OneToOne(mappedBy = "thumbnail", cascade = CascadeType.ALL, orphanRemoval = true)
     private Video thumbnailMedia;
+
     @OneToOne(mappedBy = "profilePic", cascade = CascadeType.ALL, orphanRemoval = true)
     private User userPic;
 

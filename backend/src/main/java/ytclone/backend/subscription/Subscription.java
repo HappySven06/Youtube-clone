@@ -1,20 +1,25 @@
 package ytclone.backend.subscription;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import ytclone.backend.user.User;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "channel_user_id", nullable = false)
     private User channel;
+
     @ManyToOne
     @JoinColumn(name = "user_user_id", nullable = false)
     private User user;
+
     private boolean notification;
 
     protected Subscription() {}
